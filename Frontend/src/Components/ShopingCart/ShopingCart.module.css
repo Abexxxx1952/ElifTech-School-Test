@@ -1,0 +1,33 @@
+.conteiner {
+  margin-top: 30px;
+}
+.personData_conteiner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+}
+.shopitem_conteiner {
+  max-height: 1200px;
+}
+.personData_conteiner__item {
+  margin: 50px;
+  width: 250px;
+}
+
+.shopitem_conteiner__cart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.shopitem_conteiner__input {
+  margin: 10px;
+}
+.toal_conteiner {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 100px;
+  padding-right: 150px;
+}

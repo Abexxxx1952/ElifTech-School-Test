@@ -1,0 +1,20 @@
+.conteiner {
+  margin-top: 30px;
+}
+
+.shop_conteiner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.shop_conteiner__item {
+  margin: 20px;
+  width: 150px;
+}
+
+.shopitem_conteiner__button {
+  margin-top: 30px;
+  margin-left: 100px;
+}
