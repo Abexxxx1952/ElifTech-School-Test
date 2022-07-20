@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 const createError = require("http-errors");
 
 require("./initDB")();
@@ -8,14 +9,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const ShopRoute = require("./Routes/Shop.route");
 const ShopItemsRoute = require("./Routes/ShopItems.route");
 const OrdersRoute = require("./Routes/Orders.route");
 
-app.use("/shops", ShopRoute);
-app.use("/shopItems", ShopItemsRoute);
-app.use("/orders", OrdersRoute);
+app.use("/api/shops", ShopRoute);
+app.use("/api/shopItems", ShopItemsRoute);
+app.use("/api/orders", OrdersRoute);
 
 app.use((req, res, next) => {
   next(createError(404, "Not found"));

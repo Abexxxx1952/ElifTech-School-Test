@@ -1,19 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { postOrders } from "../../Services/getApi";
+
+import { useStateContext } from "../../Context/ContextProviderHook";
+
 import style from "./ShopingCart.module.css";
 
-import { Col, Row, Input, Card, InputNumber, Button } from "antd";
+import { Col, Row, Input, Card, Button } from "antd";
 
-function ShopingCart(props) {
+function ShopingCart() {
   const placeholders = ["Name", "Email", "Phone", "Address"];
   const { Meta } = Card;
-  const onChangeInput = () => {};
+
+  const { order, totalPrice, onAdd, onRemove, setOrder, setTotalPrice } =
+    useStateContext();
+
+  useEffect(() => {
+    setOrder(JSON.parse(localStorage.getItem("order")) || []);
+  }, []);
+
+  const fetchOrder = async () => {
+    await order.map((elem) => {
+      const res = postOrders(elem);
+      return res;
+    });
+  };
+  console.log(totalPrice);
   return (
     <div className={style.conteiner}>
       <Row gutter={[16, 16]}>
         <Col xs={4} sm={4} md={6} lg={8} xl={8}>
           <div className={style.personData_conteiner}>
             {placeholders.map((elem) => (
-              <div className={style.personData_conteiner__item}>
+              <div className={style.personData_conteiner__item} key={elem.name}>
                 <Input placeholder={elem} />
               </div>
             ))}
@@ -22,26 +40,47 @@ function ShopingCart(props) {
 
         <Col xs={20} sm={20} md={18} lg={16} xl={16}>
           <div className={style.shopitem_conteiner}>
-            <Card
-              hoverable
-              style={{ width: 240 }}
-              cover={
-                <img
-                  alt="example"
-                  src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                />
-              }
-              className={style.shopitem_conteiner__cart}
-            >
-              <Meta title="Europe Street beat" />
-              <InputNumber
-                min={1}
-                max={10}
-                defaultValue={1}
-                onChange={onChangeInput}
-                className={style.shopitem_conteiner__input}
-              />
-            </Card>
+            {!order && <h2>Нету заказов</h2>}
+            {order &&
+              order.map((elem) => (
+                <div
+                  className={style.shop_conteiner__orderitem}
+                  key={elem.name}
+                >
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    cover={
+                      <img
+                        alt="example"
+                        src="https://bytes.ua/wp-content/uploads/2017/08/no-image.png"
+                      />
+                    }
+                    className={style.shopitem_conteiner__cart}
+                  >
+                    <Meta title={`${elem.name} ${elem.price} грн`} />
+                    <div className={style.shopitem_conteiner__input}>
+                      <div>{elem.quantity}шт.</div>
+                      <div className={style.shopitem_conteiner__button}>
+                        <Button
+                          type="primary"
+                          shape="circle"
+                          onClick={() => onAdd(elem)}
+                        >
+                          +
+                        </Button>
+                        <Button
+                          type="primary"
+                          shape="circle"
+                          onClick={() => onRemove(elem)}
+                        >
+                          -
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              ))}
           </div>
         </Col>
       </Row>
@@ -50,8 +89,8 @@ function ShopingCart(props) {
 
         <Col xs={20} sm={20} md={18} lg={16} xl={16}>
           <div className={style.toal_conteiner}>
-            Total price: 47
-            <Button type="dashed" size="large">
+            Total price: {totalPrice}
+            <Button type="dashed" size="large" onClick={fetchOrder}>
               Submit
             </Button>
           </div>

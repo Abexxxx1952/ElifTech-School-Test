@@ -1,78 +1,110 @@
 import React from "react";
 
+import { useEffect } from "react";
+
+import { getShops, getShopItems } from "../../Services/getApi";
+import { useStateContext } from "../../Context/ContextProviderHook";
+
 import style from "./Shop.module.css";
 import { Col, Row, Card, Button } from "antd";
 
 function Shop() {
   const { Meta } = Card;
+  const {
+    shops,
+    setShops,
+    shopcarts,
+    setShopcarts,
+    currentshops,
+    setCurrentShops,
+    order,
+    setOrder,
+    onAdd,
+    totalPrice,
+    setTotalPrice,
+  } = useStateContext();
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const res = await getShops();
+      setShops(res);
+      setCurrentShops(res[0].name);
+    };
+    fetchItems();
+  }, [setShops, setCurrentShops]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const res = await getShopItems(currentshops);
+      setShopcarts(res);
+    };
+    fetchItems();
+  }, [currentshops, setShopcarts]);
+
   return (
     <div className={style.conteiner}>
       <Row gutter={[16, 16]}>
         <Col xs={4} sm={4} md={6} lg={8} xl={8}>
           <div className={style.shop_conteiner}>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              className={style.shop_conteiner__item}
-            >
-              MC Donny
-            </Button>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              className={style.shop_conteiner__item}
-            >
-              CFK
-            </Button>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              className={style.shop_conteiner__item}
-            >
-              etc...
-            </Button>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              className={style.shop_conteiner__item}
-            >
-              etc...
-            </Button>
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              className={style.shop_conteiner__item}
-            >
-              etc...
-            </Button>
+            {shops &&
+              shops.map((elem) => {
+                const flag = () => {
+                  if (!order[0]?.shop) {
+                    return false;
+                  }
+
+                  if (!!order[0]?.shop) {
+                    return elem.name !== order[0].shop;
+                  }
+                };
+
+                return (
+                  <Button
+                    onClick={() => setCurrentShops(elem.name)}
+                    key={elem.name}
+                    type="primary"
+                    shape="round"
+                    size="large"
+                    disabled={flag()}
+                    className={style.shop_conteiner__item}
+                  >
+                    {elem.name}
+                  </Button>
+                );
+              })}
           </div>
         </Col>
 
         <Col xs={20} sm={20} md={18} lg={16} xl={16}>
-          <Card
-            hoverable
-            style={{ width: 240 }}
-            cover={
-              <img
-                alt="example"
-                src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-              />
-            }
-          >
-            <Meta title="Europe Street beat" />
-            <Button
-              type="primary"
-              danger
-              className={style.shopitem_conteiner__button}
-            >
-              Заказать
-            </Button>
-          </Card>
+          <div className={style.shop_conteiner__cart}>
+            {shopcarts &&
+              shopcarts.map((elem) => (
+                <div className={style.shop_conteiner__cartitem} key={elem.name}>
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    cover={
+                      <img
+                        alt="example"
+                        src="https://bytes.ua/wp-content/uploads/2017/08/no-image.png"
+                      />
+                    }
+                  >
+                    <Meta title={elem.name} />
+                    <Meta title={`${elem.price} грн`} />
+
+                    <Button
+                      onClick={() => onAdd(elem)}
+                      type="primary"
+                      danger
+                      className={style.shopitem_conteiner__button}
+                    >
+                      Заказать
+                    </Button>
+                  </Card>
+                </div>
+              ))}
+          </div>
         </Col>
       </Row>
     </div>

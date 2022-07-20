@@ -10,6 +10,8 @@
 }
 .shopitem_conteiner {
   max-height: 1200px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .personData_conteiner__item {
   margin: 50px;
@@ -23,11 +25,25 @@
   align-items: center;
 }
 .shopitem_conteiner__input {
-  margin: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .toal_conteiner {
   display: flex;
   justify-content: space-between;
   padding-left: 100px;
   padding-right: 150px;
+}
+
+.shop_conteiner__orderitem {
+  margin: 20px;
+}
+
+.shopitem_conteiner__button {
+  margin: 20px;
+  display: flex;
+  gap: 20px;
 }
