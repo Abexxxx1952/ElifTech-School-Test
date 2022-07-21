@@ -18,13 +18,18 @@ function ShopingCart() {
     setOrder(JSON.parse(localStorage.getItem("order")) || []);
   }, []);
 
-  const fetchOrder = async () => {
+  /*   const fetchOrder = async () => {
     await order.map((elem) => {
       const res = postOrders(elem);
       return res;
     });
+  }; */
+
+  const fetchOrder = async () => {
+    const res = await postOrders({ order });
+    return res;
   };
-  console.log(totalPrice);
+  console.log(order);
   return (
     <div className={style.conteiner}>
       <Row gutter={[16, 16]}>

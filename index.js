@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 const ShopRoute = require("./Routes/Shop.route");
 const ShopItemsRoute = require("./Routes/ShopItems.route");
