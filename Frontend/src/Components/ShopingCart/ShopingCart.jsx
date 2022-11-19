@@ -14,9 +14,9 @@ function ShopingCart() {
   const { order, totalPrice, onAdd, onRemove, setOrder, setTotalPrice } =
     useStateContext();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setOrder(JSON.parse(localStorage.getItem("order")) || []);
-  }, []);
+  }, []); */
 
   /*   const fetchOrder = async () => {
     await order.map((elem) => {
@@ -27,9 +27,15 @@ function ShopingCart() {
 
   const fetchOrder = async () => {
     const res = await postOrders({ order });
-    return res;
+    if (res) {
+      setOrder([]);
+      setTotalPrice(0);
+    }
   };
+
+  /*   localStorage.setItem("orderTotal", totalPrice); */
   console.log(order);
+  console.log(totalPrice);
   return (
     <div className={style.conteiner}>
       <Row gutter={[16, 16]}>
@@ -45,7 +51,7 @@ function ShopingCart() {
 
         <Col xs={20} sm={20} md={18} lg={16} xl={16}>
           <div className={style.shopitem_conteiner}>
-            {!order && <h2>Нету заказов</h2>}
+            {!order.length && <h2>Нету заказов</h2>}
             {order &&
               order.map((elem) => (
                 <div

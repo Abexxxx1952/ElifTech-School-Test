@@ -25,13 +25,13 @@ function Shop() {
   } = useStateContext();
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchShops = async () => {
       const res = await getShops();
       setShops(res);
       setCurrentShops(res[0].name);
     };
-    fetchItems();
-  }, [setShops, setCurrentShops]);
+    fetchShops();
+  }, []);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -39,13 +39,15 @@ function Shop() {
       setShopcarts(res);
     };
     fetchItems();
-  }, [currentshops, setShopcarts]);
+  }, [currentshops]);
+
+  /*  localStorage.setItem("orderTotal", totalPrice); */
 
   return (
-    <div className={style.conteiner}>
+    <div className={style.container}>
       <Row gutter={[16, 16]}>
         <Col xs={4} sm={4} md={6} lg={8} xl={8}>
-          <div className={style.shop_conteiner}>
+          <div className={style.shop_container}>
             {shops &&
               shops.map((elem) => {
                 const flag = () => {
@@ -66,7 +68,7 @@ function Shop() {
                     shape="round"
                     size="large"
                     disabled={flag()}
-                    className={style.shop_conteiner__item}
+                    className={style.shop_container__item}
                   >
                     {elem.name}
                   </Button>
@@ -76,10 +78,10 @@ function Shop() {
         </Col>
 
         <Col xs={20} sm={20} md={18} lg={16} xl={16}>
-          <div className={style.shop_conteiner__cart}>
+          <div className={style.shop_container__cart}>
             {shopcarts &&
               shopcarts.map((elem) => (
-                <div className={style.shop_conteiner__cartitem} key={elem.name}>
+                <div className={style.shop_container__cartitem} key={elem.name}>
                   <Card
                     hoverable
                     style={{ width: 240 }}
@@ -97,7 +99,7 @@ function Shop() {
                       onClick={() => onAdd(elem)}
                       type="primary"
                       danger
-                      className={style.shopitem_conteiner__button}
+                      className={style.shopitem_container__button}
                     >
                       Заказать
                     </Button>

@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
-import {
-  AppstoreOutlined,
-  DropboxOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { AppstoreOutlined, DropboxOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 
 const Navigation = () => {
   return (
-    <Menu mode="horizontal" defaultSelectedKeys={["mail"]}>
+    <Menu mode="horizontal">
       <Menu.Item icon={<AppstoreOutlined />}>
         <NavLink to="/">Shop</NavLink>
       </Menu.Item>

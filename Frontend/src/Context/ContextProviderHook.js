@@ -11,12 +11,16 @@ export const ContextProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    setTotalPrice(JSON.parse(localStorage.getItem("orderTotal")));
+    setTotalPrice(JSON.parse(localStorage.getItem("orderTotalPrice")));
+    setOrder(JSON.parse(localStorage.getItem("order")) || []);
   }, []);
 
+  useEffect(() => {
+    if (totalPrice !== 0) localStorage.setItem("orderTotalPrice", totalPrice);
+  }, [totalPrice]);
+
   const onAdd = (product) => {
-    setTotalPrice((prevtotalPrice) => prevtotalPrice + product.price * 1);
-    localStorage.setItem("orderTotal", JSON.stringify(totalPrice));
+    setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price);
 
     const checkProductInCart = order.find((item) => item.name === product.name);
 
@@ -47,8 +51,7 @@ export const ContextProvider = ({ children }) => {
 
   const onRemove = (product) => {
     if (product.quantity === 1) return;
-    setTotalPrice((prevtotalPrice) => prevtotalPrice - product.price * 1);
-    localStorage.setItem("orderTotal", JSON.stringify(totalPrice));
+    setTotalPrice((prevtotalPrice) => prevtotalPrice - product.price);
 
     const updatedCartItems = order.map((cartProduct) => {
       if (cartProduct.name === product.name) {
